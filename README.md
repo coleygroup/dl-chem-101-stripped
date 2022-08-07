@@ -1,10 +1,12 @@
-# dl-chem-101
+# dl-chem-101-stripped
 
 A repository for various introductory tutorials on deep learning for chemistry.
 
 * [FFN Property Prediction](./01_prop_pred_FFN/)
 * [GNN Property Prediction](./02_prop_pred_GNN/)
 * [LSTM SMILES Generation](./03_gen_SMILES_LSTM/)
+
+*NOTE:* We have stripped all the code in this repo of comments and docstrings. We leave the task of adding new ones back to the code as an exercise for folks new to machine learning in chemistry, as it can be a good way of testing if you understand what the code is doing. Give it a go!
 
 ## Introduction
 
