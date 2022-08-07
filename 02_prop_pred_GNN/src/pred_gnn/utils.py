@@ -1,4 +1,4 @@
-""" utils.py """
+
 import sys
 import copy
 import logging
@@ -12,13 +12,7 @@ from pytorch_lightning.loggers.base import rank_zero_experiment
 
 
 def setup_logger(save_dir, log_name="output.log", debug=False):
-    """setup_logger.
-
-    Args:
-        save_dir:
-        log_name:
-        debug:
-    """
+    
     save_dir = Path(save_dir)
     save_dir.mkdir(exist_ok=True)
     log_file = save_dir / log_name
@@ -35,7 +29,7 @@ def setup_logger(save_dir, log_name="output.log", debug=False):
 
     file_handler.setLevel(level)
 
-    # Define basic logger
+    
     logging.basicConfig(
         level=level,
         format="%(asctime)s %(levelname)s: %(message)s",
@@ -45,16 +39,16 @@ def setup_logger(save_dir, log_name="output.log", debug=False):
         ],
     )
 
-    # configure logging at the root level of lightning
-    # logging.getLogger("pytorch_lightning").setLevel(logging.ERROR)
+    
+    
 
-    # configure logging on module level, redirect to file
+    
     logger = logging.getLogger("pytorch_lightning.core")
     logger.addHandler(logging.FileHandler(log_file))
 
 
 class ConsoleLogger(LightningLoggerBase):
-    """Custom console logger class"""
+    
 
     def __init__(self):
         super().__init__()
@@ -76,7 +70,7 @@ class ConsoleLogger(LightningLoggerBase):
 
     @rank_zero_only
     def log_hyperparams(self, params):
-        ## No need to log hparams
+        
         pass
 
     @rank_zero_only
@@ -96,23 +90,13 @@ class ConsoleLogger(LightningLoggerBase):
         pass
 
 
-# Parallel operations
+
 def simple_parallel(input_list,
                     function,
                     max_cpu=16,
                     timeout=4000,
                     max_retries=3):
-    """simple_parallel.
-
-    Use map async and retries in case we get odd stalling behavior.
-
-    Args:
-        input_list:
-        function:
-        max_cpu:
-        timeout:
-        max_retries:
-    """
+    
     from multiprocess.context import TimeoutError
     from pathos import multiprocessing as mp
 
@@ -154,18 +138,9 @@ def chunked_parallel(input_list,
                      max_cpu=16,
                      timeout=4000,
                      max_retries=3):
-    """chunked_parallel.
+    
 
-    Args:
-        input_list : list of objects to apply function
-        function : Callable with 1 input and returning a single value
-        chunks: number of hcunks
-        max_cpu: Max num cpus
-        timeout: Length of timeout
-        max_retries: Num times to retry this
-    """
-
-    # Adding it here fixes somessetting disrupted elsewhere
+    
 
     def batch_func(list_inputs):
         outputs = []
@@ -187,7 +162,7 @@ def chunked_parallel(input_list,
                                    max_cpu=max_cpu,
                                    timeout=timeout,
                                    max_retries=max_retries)
-    # Unroll
+    
     full_output = [j for i in list_outputs for j in i]
 
     return full_output

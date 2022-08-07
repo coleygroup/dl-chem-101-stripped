@@ -1,8 +1,4 @@
-"""train.py
 
-Train gnn to predict binned specs
-
-"""
 import logging
 import yaml
 import argparse
@@ -31,7 +27,7 @@ def get_args():
 
     parser.add_argument("--dataset-name", default="caco", choices=["cacao"])
 
-    # Model args
+    
     parser.add_argument("--layers", default=3, action="store", type=int)
     parser.add_argument("--dropout", default=0.1, action="store", type=float)
     parser.add_argument("--hidden-size", default=256, action="store", type=int)
@@ -48,17 +44,17 @@ def train_model():
                        debug=kwargs['debug'])
     pl.utilities.seed.seed_everything(kwargs.get("seed"))
 
-    # Dump args
+    
     yaml_args = yaml.dump(kwargs, indent=2, default_flow_style=False)
     with open(Path(save_dir) / "args.yaml", "w") as fp:
         fp.write(yaml_args)
 
     logging.info(f"Args:\n{yaml_args}")
 
-    # Extract data
+    
     if kwargs['dataset_name'] == "caco":
         data = ADME(name='Caco2_Wang')
-        # df = data.get_data()
+        
         splits = data.get_split()
         train_smi, train_y = zip(*splits['train'][['Drug', 'Y']].values)
         valid_smi, valid_y = zip(*splits['valid'][['Drug', 'Y']].values)
@@ -85,7 +81,7 @@ def train_model():
     dataset_sizes = (len(train_dataset), len(valid_dataset), len(test_dataset))
     logging.info(f"Train, val, test sizes: {dataset_sizes}")
 
-    # Define dataloaders
+    
     collate_fn = train_dataset.get_collate_fn()
     train_loader = DataLoader(train_dataset,
                               num_workers=kwargs['num_workers'],
@@ -103,8 +99,8 @@ def train_model():
                              shuffle=False,
                              batch_size=kwargs['batch_size'])
 
-    # Define model
-    # test_batch = next(iter(train_loader))
+    
+    
 
     model = gnn_model.ForwardGNN(
         hidden_size=kwargs['hidden_size'],
@@ -113,9 +109,9 @@ def train_model():
         output_dim=1,
     )
 
-    # outputs = model(test_batch['graphs'])
+    
 
-    # Create trainer
+    
     tb_logger = pl_loggers.TensorBoardLogger(save_dir, name="")
     console_logger = utils.ConsoleLogger()
 
@@ -142,7 +138,7 @@ def train_model():
     best_checkpoint = checkpoint_callback.best_model_path
     best_checkpoint_score = checkpoint_callback.best_model_score.item()
 
-    # Load from checkpoint
+    
     model = gnn_model.ForwardGNN.load_from_checkpoint(best_checkpoint)
     logging.info(
         f"Loaded model with from {best_checkpoint} with val loss of {best_checkpoint_score}"

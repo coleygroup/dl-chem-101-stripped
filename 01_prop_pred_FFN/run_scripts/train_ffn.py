@@ -1,5 +1,4 @@
-""" Train a model.
-"""
+
 
 import pred_ffn.train as train
 import logging

@@ -1,4 +1,4 @@
-""" collect_hidden_sweep. """
+
 import yaml
 import pandas as pd
 import argparse

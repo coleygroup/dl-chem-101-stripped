@@ -1,5 +1,4 @@
-""" Make predictions
-"""
+
 
 import pred_gnn.predict as predict
 import logging

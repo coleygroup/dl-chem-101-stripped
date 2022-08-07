@@ -1,8 +1,4 @@
-"""predict.py
 
-Make predictions with trained model
-
-"""
 import logging
 import yaml
 import argparse
@@ -46,14 +42,14 @@ def predict():
                        debug=kwargs['debug'])
     pl.utilities.seed.seed_everything(kwargs.get("seed"))
 
-    # Dump args
+    
     yaml_args = yaml.dump(kwargs, indent=2, default_flow_style=False)
     logging.info(f"Args:\n{yaml_args}")
     with open(Path(save_dir) / "args.yaml", "w") as fp:
         fp.write(yaml_args)
 
-    # Get dataset
-    # Load smiles for pred
+    
+    
     input_smiles = Path(kwargs['smiles_file'])
     if not input_smiles.exists():
         raise ValueError(f"Unable to find file {input_smiles}")
@@ -62,11 +58,11 @@ def predict():
     if debug:
         smiles = smiles[:200]
 
-    # Get train, val, test inds
+    
     num_workers = kwargs.get("num_workers", 0)
     pred_dataset = gnn_data.MolDataset(smiles, num_workers=num_workers)
 
-    # Define dataloaders
+    
     collate_fn = pred_dataset.get_collate_fn()
     pred_loader = DataLoader(pred_dataset,
                              num_workers=kwargs['num_workers'],
@@ -74,10 +70,10 @@ def predict():
                              shuffle=False,
                              batch_size=kwargs['batch_size'])
 
-    # Create model and load
+    
     best_checkpoint = kwargs['checkpoint_pth']
 
-    # Load from checkpoint
+    
     model = gnn_model.ForwardGNN.load_from_checkpoint(best_checkpoint)
     logging.info(f"Loaded model with from {best_checkpoint}")
 

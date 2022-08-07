@@ -1,5 +1,4 @@
-""" Train a model.
-"""
+
 
 import pred_gnn.train as train
 import logging

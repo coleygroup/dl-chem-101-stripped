@@ -1,8 +1,4 @@
-"""
-Train a SMILES LSTM using ZINC data locally.
 
-Model trains for 10 epochs using the default settings below (~5 mins on a GPU).
-"""
 import argparse
 from pathlib import Path
 from smiles_lstm.model.smiles_lstm import SmilesLSTM
@@ -11,14 +7,14 @@ from smiles_lstm.model.smiles_vocabulary import SMILESTokenizer, create_vocabula
 from smiles_lstm.utils import load
 from smiles_lstm.utils.misc import suppress_warnings
 
-# suppress minor warnings
+
 suppress_warnings()
 
-# define the argument parser
+
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                                  add_help=False)
 
-# define parameters for the model
+
 parser.add_argument("--output",
                     type=str,
                     default="./output/run_local/",
@@ -40,10 +36,10 @@ if __name__ == '__main__':
                                        tokenizer=test_tokenizer,
                                        canonical=False)
     
-    # trainer object expects data in a dictionary, so reorganizing it so
+    
     SMILES_dict = {"train" : train, "valid" : valid, "test"  : test}
     
-    # define network parameters
+    
     network_parameters = {
         'num_layers'          : 3,
         'layer_size'          : 512,

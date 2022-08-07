@@ -1,7 +1,4 @@
-"""
-Downloads ZINC data from the Therapeutics Data Commons (TDC) and saves it into
-train/test/validation splits of size 50K/5K/5K.
-"""
+
 import os
 from pathlib import Path
 from tdc.generation import MolGen
@@ -10,16 +7,14 @@ from rdkit import Chem
 
 
 def save_split(smi_file : Path, smi_list : list) -> None:
-    """
-    Saves input list of SMILES to the specified file path.
-    """
+    
     smi_writer = rdkit.Chem.rdmolfiles.SmilesWriter(str(smi_file))
     for smi in smi_list:
         try:
             mol = rdkit.Chem.MolFromSmiles(smi[0])
             if mol is not None:
                 smi_writer.write(mol)
-        except:  # if exception raised, likely TypeError or AttributeError, e.g., 'smi[0]' is 'nan'
+        except:  
             continue
     smi_writer.close()
 
